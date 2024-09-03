@@ -91,7 +91,7 @@ def simplify(exprs, first_is_negative=False):
         return o
     elif len(exprs) > 1:
         raise Exception("No ops, expected sub-expr to be a unit: {}"
-                        .format(expr))
+                        .format(exprs))
     elif exprs[0][0] == '-':
         return simplify([exprs[0][1:]], not first_is_negative)
     elif exprs[0].isnumeric():

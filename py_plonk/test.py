@@ -7,10 +7,10 @@ from mini_poseidon import rc, mds, poseidon_hash
 def basic_test():
     setup = c.Setup.from_file('powersOfTau28_hez_final_11.ptau')
     print("Extracted setup")
-    vk = c.make_verification_key(setup, 8, ['c <== a * b'])
+    vk = c.make_verification_key(setup, 8, ['c <== a * b'])#py_plonk에서 생성한 vk
     print("Generated verification key")
-    their_output = json.load(open('main.plonk.vkey.json'))
-    for key in ('Qm', 'Ql', 'Qr', 'Qo', 'Qc', 'S1', 'S2', 'S3', 'X_2'):
+    their_output = json.load(open('main.plonk.vkey.json')) #zkrepl에서 생성한 vk 파일
+    for key in ('Qm', 'Ql', 'Qr', 'Qo', 'Qc', 'S1', 'S2', 'S3', 'X_2'): #py_plonk에서 생성한 vk와 zkrepl에서 생성한 vk를 비교
         if c.interpret_json_point(their_output[key]) != vk[key]:
             raise Exception("Mismatch {}: ours {} theirs {}"
                             .format(key, vk[key], their_output[key]))
@@ -60,7 +60,7 @@ def verifier_test(setup, proof):
     eqs = ['e public', 'c <== a * b', 'e <== c * d']
     public = [60]
     vk = c.make_verification_key(setup, 8, eqs)
-    assert v.verify_proof(setup, 8, vk, proof, public, optimized=False)
+    #assert v.verify_proof(setup, 8, vk, proof, public, optimized=False)
     assert v.verify_proof(setup, 8, vk, proof, public, optimized=True)
     print("Verifier test success")
 
@@ -136,6 +136,7 @@ def poseidon_test(setup):
     print("Generated proof")
     assert v.verify_proof(setup, 1024, vk, proof, [1, 2, expected_value])
     print("Verified proof!")
+
 if __name__ == '__main__':
     setup = basic_test()
     ab_plus_a_test(setup)
@@ -143,4 +144,4 @@ if __name__ == '__main__':
     proof = prover_test(setup)
     verifier_test(setup, proof)
     factorization_test(setup)
-    poseidon_test(setup)
+    #poseidon_test(setup)

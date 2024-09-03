@@ -85,6 +85,7 @@ class Setup(object):
     def from_file(cls, filename):
         contents = open(filename, 'rb').read()
         # Byte 60 gives you the base-2 log of how many powers there are
+        print("@@@@@@@@@@@",contents[60])
         powers = 2**contents[SETUP_FILE_POWERS_POS]
         # Extract G1 points, which start at byte 80
         values = [
